@@ -17,11 +17,24 @@ n = sum(n_h)
 
 load("sample.Rdata")
 
+make_store_url = function(department, number){
+  url_part1 = "http://dukebooks.collegestoreonline.com/ePOS?wpd=1&width=100%25&this_category=1&term=SP18&store=320&step=5&qty=1000&listtype=begin&go=Go&form=shared3%2Ftextbooks%2Fno_jscript%2Fmain.html&design=duke_textbooks&department="
+  url_part2 = department
+  url_part3 = "&course="
+  url_part4 = as.character(number)
+  url_part5 = "&colspan=3&cellspacing=1&cellpadding=0&campus=MAIN&border=0&bgcolor=%23cccccc&action=list_courses&section=01&Go=Go"
+  store_url = paste(url_part1, url_part2, url_part3, url_part4, url_part5, sep = "")
+  return(store_url)
+}
 
-
-
-
-
+x = rep(NA, n)
+for (i in seq_along(x)){
+  x[i] = make_store_url(sample.df[i,"department"], sample.df[i, "course"])
+}
+# now begins the suffering, scraping too dificult here
+num_book = c(0,1,0)
+new_cost = c(0,181.50,0)
+use_cost = c(0,136.25,0)
 
 if (!file.exists("sample.Rdata")){
   department = c()
