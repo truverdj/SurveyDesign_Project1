@@ -2,12 +2,27 @@ library(readr)
 library(rvest)
 library(dplyr)
 library(stringr)
-# page_biol = read_html("http://biology.duke.edu/courses")
-# table_biol = page_biol %>%
-#   html_node("#block-views-courses-block > div > div > div > table") %>%
-#   html_table() %>%
-#   filter(str_detect(.[,"Course Notes"], "offered Spring 2018"))
-make_store_url = function(department, number){
+
+load("classes.Rdata")
+
+M = c()
+for (school in names(classes.df)){
+  M[school] = sum(classes.df[,school] != "")
+}
+
+
+save(classes.df, file = "classes.Rdata")
+
+
+
+
+
+
+
+
+
+if (!file.exists("classes.Rdata")){
+  make_store_url = function(department, number){
   url_part1 = "http://dukebooks.collegestoreonline.com/ePOS?wpd=1&width=100%25&this_category=1&term=SP18&store=320&step=5&qty=1000&listtype=begin&go=Go&form=shared3%2Ftextbooks%2Fno_jscript%2Fmain.html&design=duke_textbooks&department="
   url_part2 = department
   url_part3 = "&course="
@@ -151,4 +166,23 @@ classes.df = data.frame(biochem_courses,
                         physics_courses,
                         psy_courses,
                         sta_courses)
+colnames(classes.df) = c("BIOCHEM", "BIOLOGY", "BIOSTAT", "CMB", 
+                         "CHEM", "COMPSCI", "EVANTH", "MATH",
+                         "MGM", "NEUROBIO", "NEUROSCI", "PHYSICS",
+                         "PSY", "STA")
+for (school in names(classes.df)){
+  numbers = str_extract(classes.df[,school], "\\d\\d\\d") 
+  numbers[is.na(numbers)] = 999
+  in.range = numbers <= 699
+  classes.df[,school][!in.range] = ""
+}
+
+classes.df = classes.df %>%
+  select(-BIOSTAT)
 save(classes.df, file = "classes.Rdata")
+}
+# page_biol = read_html("http://biology.duke.edu/courses")
+# table_biol = page_biol %>%
+#   html_node("#block-views-courses-block > div > div > div > table") %>%
+#   html_table() %>%
+#   filter(str_detect(.[,"Course Notes"], "offered Spring 2018"))
