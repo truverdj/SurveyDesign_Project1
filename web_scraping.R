@@ -5,6 +5,7 @@ library(stringr)
 
 load("classes.Rdata")
 
+
 N_h = c()
 for (school in names(classes.df)){
   N_h[school] = sum(classes.df[,school] != "")
@@ -32,9 +33,12 @@ for (i in seq_along(x)){
   x[i] = make_store_url(sample.df[i,"department"], sample.df[i, "course"])
 }
 # now begins the suffering, scraping too dificult here
-num_book = c(0,1,0,0,0,0,3,0,0,0,0,)
-new_cost = c(0,181.50,0,0,0,0,202.95,0,0,0,0,)
-use_cost = c(0,136.25,0,0,0,0,152.25,0,0,0,0,)
+num_book = c(0,1,0,0,0,0,3,0,0,0,0,0,0,0,0,
+             0,0,0)
+new_cost = c(0,181.50,0,0,0,0,202.95,0,0,0,0,0,0,0,0,
+             0,0,0)
+use_cost = c(0,136.25,0,0,0,0,152.25,0,0,0,0,0,0,0,0,
+             0,0,0)
 
 if (!file.exists("sample.Rdata")){
   department = c()
@@ -209,6 +213,18 @@ for (school in names(classes.df)){
 
 classes.df = classes.df %>%
   select(-BIOSTAT)
+classes.df$BIOCHEM[3] = ""
+classes.df$BIOLOGY[c(29:32,50,51,65:68)] = ""
+classes.df$CHEM[c(10,15:16,20:21)] = ""
+classes.df$COMPSCI[c(19:20)] = ""
+classes.df$EVANTH[c(16:17)] = ""
+classes.df$MATH[c(6,21:24,33:36)] = ""
+classes.df$MGM[c(1,2,6)] = ""
+classes.df$NEUROBIO[c(2)] = ""
+classes.df$NEUROSCI[c(22,24:27)] = ""
+classes.df$PHYSICS[c(32:34)] = ""
+classes.df$PSY[c(45,53)] = ""
+classes.df$STA[c(13,17)] = ""
 save(classes.df, file = "classes.Rdata")
 }
 # page_biol = read_html("http://biology.duke.edu/courses")
