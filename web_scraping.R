@@ -5,20 +5,37 @@ library(stringr)
 
 load("classes.Rdata")
 
-M = c()
+N_h = c()
 for (school in names(classes.df)){
-  M[school] = sum(classes.df[,school] != "")
+  N_h[school] = sum(classes.df[,school] != "")
 }
+n = 50
+N = sum(N_h)
+n_h = round(n* (N_h/N) )
+n_h[n_h == 0] = 1
+n = sum(n_h)
+
+load("sample.Rdata")
 
 
-save(classes.df, file = "classes.Rdata")
 
 
 
 
 
-
-
+if (!file.exists("sample.Rdata")){
+  department = c()
+  for (i in seq_along(n_h)) {
+    department = c(department, rep(names(n_h[i]), n_h[i]))
+  }
+  course = c()
+  set.seed(2018)
+  for (school in names(classes.df)){
+    course = c(course, sample(x = as.character(classes.df[,school] %>% .[.!=""]), n_h[school]))
+  }
+  sample.df = data.frame(department, course)
+  save(sample.df, file = "sample.Rdata")
+}
 
 
 if (!file.exists("classes.Rdata")){
