@@ -32,9 +32,9 @@ for (i in seq_along(x)){
   x[i] = make_store_url(sample.df[i,"department"], sample.df[i, "course"])
 }
 # now begins the suffering, scraping too dificult here
-num_book = c(0,1,0)
-new_cost = c(0,181.50,0)
-use_cost = c(0,136.25,0)
+num_book = c(0,1,0,0,0,0,3,0,0,0,0,)
+new_cost = c(0,181.50,0,0,0,0,202.95,0,0,0,0,)
+use_cost = c(0,136.25,0,0,0,0,152.25,0,0,0,0,)
 
 if (!file.exists("sample.Rdata")){
   department = c()
