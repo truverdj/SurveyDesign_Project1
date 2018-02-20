@@ -1,0 +1,11 @@
+---
+title: "STA 522 Project 1 (Survey of Textbooks)"
+author: "Daniel Truver"
+date: "2/19/2018"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
