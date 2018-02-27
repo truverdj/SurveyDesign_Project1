@@ -1,11 +1,73 @@
 ---
 title: "STA 522 Project 1 (Survey of Textbooks)"
-author: "Daniel Truver"
-date: "2/19/2018"
+author: "Arpita Mandan, Daniel Truver"
+date: "2/5/2018"
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+load("surveyData.Rdata")
 ```
 
+##### (1) Sampling Design
+
+-Stratify by department `r unique(surveyData$department)`
+
+-SRS within department
+
+-within stratum sample size chosen by optimum allocation formula
+
+-total nuber of cases: 54. used optimal allocation formula with n = 50, then added one to all cases that rounded to 0, for a total of 54
+
+- why 54? seems reasonable considering there are 358 total courses in our frame
+
+##### (2) Data Collection
+
+-took courses with names directly attacked to the natural sciences listed on https://trinity.duke.edu/natural-sciences
+
+-did not include departments with course numbers all about 700
+
+-did not include engineering of any kind
+
+-basic test was "did department name include the words biology, chemistry, computer science, evolutionary antrhopoly, mathematics, physics, psychology, neuroscience, or statistical science?" 
+--i.e. "info science" not included, "biochemistry and neurobiology included"
+--Could be a source of selection bias, but had to make the call somewhere
+
+-sampling frame obtained via web scraping, see code at the end. data obtained manually due to difficulty of scraping when section numbers can be 01 or 001
+
+##### (3) Survey Values
+
+```{r loadInData}
+load("surveyData.Rdata")
+load("classes.Rdata")
+library(survey)
+```
+
+```{r makeWeightsAndFPC}
+fpcvar = c() #bad practice, but data small enough to allow for it
+wtvar = c()
+
+N_h = c() #construct number of classes per stratum
+for (school in names(classes.df)){
+  N_h[school] = sum(classes.df[,school] != "")
+}
+n = 50
+N = sum(N_h)
+n_h = round(n* (N_h/N) )
+n_h[n_h == 0] = 1
+n = sum(n_h)
+
+for (dep in names(n_h)){
+  fpcvar = c(fpcvar, rep(N_h[dep], n_h[dep])) # grow vector of fpc's
+  wtvar = c(wtvar, rep(N_h[dep]/n_h[dep], n_h[dep]))
+}
+
+des = svydesign(~1, strata = ~department, weights = wtvar, fpc = fpcvar, data = surveyData)
+```
+
+- report required values here
+
+##### (4) Discussion
+
+-this section may be unnecessary.
