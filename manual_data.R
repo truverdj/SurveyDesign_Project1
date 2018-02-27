@@ -23,6 +23,13 @@ for (i in seq_along(x)){
   x[i] = make_store_url(sample.df[i,"department"], sample.df[i, "course"])
 }
 
-sample.df$numtexts[(n/2 + 1):n] = c(0,1,0,0,0,1,)
-sample.df$newprice[(n/2 + 1):n] = c(0,253.50,0,0,0,117.50,)
-sample.df$usedprice[(n/2 +1):n] = c(0,190.25,0,0,0,88.25,)
+sample.df$numtexts[(n/2 + 1):n] = c(0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,1,
+                                    0,1,0,0,0,1,0,0)
+sample.df$newprice[(n/2 + 1):n] = c(0,253.50,0,0,0,117.50,0,0,0,0,52.50,0,0,0,0,0,48.00,0,251.75,
+                                    0,92.75,0,0,0,200.00,0,0)
+sample.df$usedprice[(n/2 +1):n] = c(0,190.25,0,0,0,88.25,0,0,0,0,39.50,0,0,0,0,0,36.00,0,189.00,
+                                    0,69.75,0,0,0,150.00,0,0)
+
+surveyData = sample.df
+
+save(surveyData, file = "surveyData.Rdata")
