@@ -4,6 +4,10 @@ sample.df$numtexts = rep(NA, nrow(sample.df))
 sample.df$newprice = rep(NA, nrow(sample.df))
 sample.df$usedprice = rep(NA, nrow(sample.df))
 n = nrow(sample.df)
+##############################################
+# This function does not always return a valid url
+# Some classes may be listed as section 001 reather than 01
+##############################################
 make_store_url = function(department, number){
   url_part1 = "http://dukebooks.collegestoreonline.com/ePOS?wpd=1&width=100%25&this_category=1&term=SP18&store=320&step=5&qty=1000&listtype=begin&go=Go&form=shared3%2Ftextbooks%2Fno_jscript%2Fmain.html&design=duke_textbooks&department="
   url_part2 = department
