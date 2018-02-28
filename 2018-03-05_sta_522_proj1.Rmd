@@ -66,6 +66,8 @@ for (dep in names(n_h)){
 des = svydesign(~1, strata = ~department, weights = wtvar, fpc = fpcvar, data = surveyData)
 ```
 
+- need all MGM and BIOCHEM
+
 - report required values here
 
 ##### (4) Discussion

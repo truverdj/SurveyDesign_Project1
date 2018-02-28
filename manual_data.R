@@ -46,11 +46,14 @@ colnames(newBIOCHEMrows) = names(surveyData)
 
 surveyData = rbind(newBIOCHEMrows, surveyData)
 surveyData[1:7,1] = "BIOCHEM"
+surveyData[1:7,"course"] = classes.df["BIOCHEM"] %>% .[.!= "" & .!= "536"]
 
 newMGMrows = matrix(NA, ncol = ncol(surveyData), nrow = 2)
 colnames(newMGMrows) = names(surveyData)
 
 surveyData = rbind(surveyData[1:37,], newMGMrows, surveyData[38:nrow(surveyData),])
 surveyData[38:39,1] = "MGM"
+surveyData[38:39,"course"] = c("552", "582")
+
 
 save(surveyData, file = "surveyData.Rdata")
