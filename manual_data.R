@@ -55,5 +55,10 @@ surveyData = rbind(surveyData[1:37,], newMGMrows, surveyData[38:nrow(surveyData)
 surveyData[38:39,1] = "MGM"
 surveyData[38:39,"course"] = c("552", "582")
 
+####################################
+# add new MGM and BIOCHEM data below here
+####################################
+
+
 
 save(surveyData, file = "surveyData.Rdata")
