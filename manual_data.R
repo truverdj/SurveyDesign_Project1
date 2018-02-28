@@ -41,4 +41,16 @@ sample.df$usedprice[(n/2 +1):n] = c(0,190.25,0,0,0,88.25,0,0,0,0,39.50,0,0,0,0,0
 
 surveyData = sample.df
 
+newBIOCHEMrows = matrix(NA, ncol = ncol(surveyData), nrow = 7)
+colnames(newBIOCHEMrows) = names(surveyData)
+
+surveyData = rbind(newBIOCHEMrows, surveyData)
+surveyData[1:7,1] = "BIOCHEM"
+
+newMGMrows = matrix(NA, ncol = ncol(surveyData), nrow = 2)
+colnames(newMGMrows) = names(surveyData)
+
+surveyData = rbind(surveyData[1:37,], newMGMrows, surveyData[38:nrow(surveyData),])
+surveyData[38:39,1] = "MGM"
+
 save(surveyData, file = "surveyData.Rdata")
