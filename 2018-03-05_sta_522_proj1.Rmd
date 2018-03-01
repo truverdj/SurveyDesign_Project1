@@ -52,11 +52,10 @@ N_h = c() #construct number of classes per stratum
 for (school in names(classes.df)){
   N_h[school] = sum(classes.df[,school] != "")
 }
-n = 50
-N = sum(N_h)
-n_h = round(n* (N_h/N) )
-n_h[n_h == 0] = 1
-n = sum(n_h)
+n_h = c()
+for (school in names(classes.df)){
+  n_h[school] = sum(surveyData$department == school)
+}
 
 for (dep in names(n_h)){
   fpcvar = c(fpcvar, rep(N_h[dep], n_h[dep])) # grow vector of fpc's
@@ -68,8 +67,22 @@ des = svydesign(~1, strata = ~department, weights = wtvar, fpc = fpcvar, data = 
 
 - need all MGM and BIOCHEM
 
-- report required values here
+```{r Q3.averageCost}
+mean_new = svymean(~newprice, des)
+confint_new = confint(mean_new)
+mean_used = svymean(~usedprice, des)
+confint_used = confint(mean_used)
+```
 
+```{r Q3.presentResuls, echo=FALSE}
+Q3.df = data.frame(mean = c(mean_new[1], mean_used[1]),
+                   lwr = c(confint_new[1], confint_used[1]),
+                   upr = c(confint_new[2], confint_used[2]))
+rownames(Q3.df) = c("New Price", "Used Price")
+knitr::kable(Q3.df, col.names = c("Mean","2.5%","97.5%"),
+             caption = "Mean Cost of Textbooks by Class",
+             row.names = TRUE, digits = 2)
+```
 ##### (4) Discussion
 
 -this section may be unnecessary.
