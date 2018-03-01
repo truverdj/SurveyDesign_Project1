@@ -1,4 +1,5 @@
 library(dplyr)
+load("classes.Rdata")
 load("sample.Rdata")
 sample.df$numtexts = rep(NA, nrow(sample.df))
 sample.df$newprice = rep(NA, nrow(sample.df))
@@ -59,6 +60,12 @@ surveyData[38:39,"course"] = c("552", "582")
 # add new MGM and BIOCHEM data below here
 ####################################
 
+surveyData[6:7, "numtexts"] = c(0,0)
+surveyData[6:7, "newprice"] = c(0,0)
+surveyData[6:7,"usedprice"] = c(0,0)
 
+surveyData[38:39, "numtexts"] = c(0,0)
+surveyData[38:39, "newprice"] = c(0,0)
+surveyData[38:39,"usedprice"] = c(0,0)
 
 save(surveyData, file = "surveyData.Rdata")
