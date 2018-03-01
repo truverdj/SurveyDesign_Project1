@@ -77,6 +77,38 @@ des = svydesign(~1, strata = ~department, weights = wtvar, fpc = fpcvar, data = 
 
 - need all MGM and BIOCHEM
 
+```{r Q1 total cost of books}
+sum_new = svytotal(~newprice, des)
+confint_sum_new = confint(sum_new)
+sum_used = svytotal(~usedprice, des)
+confint_sum_used = confint(sum_used)
+```
+
+```{r Q1 results, echo=FALSE}
+Q1.df = data.frame(mean = c(sum_new[1], sum_used[1]),
+                   lwr = c(confint_sum_new[1], confint_sum_used[1]),
+                   upr = c(confint_sum_new[2], confint_sum_used[2]))
+rownames(Q1.df) = c("New Price", "Used Price")
+knitr::kable(Q1.df, col.names = c("Mean","2.5%","97.5%"),
+             caption = "Total Cost of Textbooks by Class",
+             row.names = TRUE, digits = 2)
+```
+
+```{r Q2 average number of books}
+mean_books = svymean(~numtexts, des)
+confint_mean_books = confint(mean_books)
+```
+
+```{r Q2 results, echo=FALSE}
+Q2.df = data.frame(mean = mean_books[1],
+                   lwr = confint_mean_books[1],
+                   upr = confint_mean_books[2])
+rownames(Q2.df) = "Books"
+knitr::kable(Q2.df, col.names = c("Mean","2.5%","97.5%"),
+             caption = "Average number of Textbooks",
+             row.names = TRUE, digits = 2)
+```
+
 ```{r Q3.averageCost}
 mean_new = svymean(~newprice, des)
 confint_new = confint(mean_new)
