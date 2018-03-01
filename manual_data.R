@@ -69,3 +69,5 @@ surveyData[38:39, "newprice"] = c(0,0)
 surveyData[38:39,"usedprice"] = c(0,0)
 
 save(surveyData, file = "surveyData.Rdata")
+
+write.csv(surveyData, file = "full_data.csv", row.names = FALSE)
