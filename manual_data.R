@@ -60,6 +60,10 @@ surveyData[38:39,"course"] = c("552", "582")
 # add new MGM and BIOCHEM data below here
 ####################################
 
+surveyData[1:5, "numtexts"] = c(0,0,0,0,0)
+surveyData[1:5, "newprice"] = c(0,0,0,0,0)
+surveyData[1:5, "usedprice"] = c(0,0,0,0,0)
+
 surveyData[6:7, "numtexts"] = c(0,0)
 surveyData[6:7, "newprice"] = c(0,0)
 surveyData[6:7,"usedprice"] = c(0,0)
@@ -67,6 +71,8 @@ surveyData[6:7,"usedprice"] = c(0,0)
 surveyData[38:39, "numtexts"] = c(0,0)
 surveyData[38:39, "newprice"] = c(0,0)
 surveyData[38:39,"usedprice"] = c(0,0)
+
+surveyData[,"rowindex"] = c(1:nrow(surveyData)) #right rows
 
 save(surveyData, file = "surveyData.Rdata")
 
