@@ -75,8 +75,6 @@ for (dep in names(n_h)){
 des = svydesign(~1, strata = ~department, weights = wtvar, fpc = fpcvar, data = surveyData)
 ```
 
-- need all MGM and BIOCHEM
-
 ```{r Q1 total cost of books}
 sum_new = svytotal(~newprice, des)
 confint_sum_new = confint(sum_new)
