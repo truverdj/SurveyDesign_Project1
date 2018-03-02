@@ -16,7 +16,7 @@ load("surveyData.Rdata")
 
 -SRS within department
 
--within stratum sample size chosen by optimum allocation formula
+-within stratum sample size chosen by optimum allocation formula (except strata with less than 10 courses, then we have full enumeration)
 
 -total nuber of cases: 54. used optimal allocation formula with n = 50, then added one to all cases that rounded to 0, for a total of 54
 
