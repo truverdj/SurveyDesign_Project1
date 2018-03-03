@@ -77,3 +77,5 @@ surveyData[,"rowindex"] = c(1:nrow(surveyData)) #right rows
 save(surveyData, file = "surveyData.Rdata")
 
 write.csv(surveyData, file = "full_data.csv", row.names = FALSE)
+
+

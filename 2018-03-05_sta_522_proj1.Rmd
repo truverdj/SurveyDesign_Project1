@@ -1,7 +1,7 @@
 ---
 title: "STA 522 Project 1 (Survey of Textbooks)"
 author: "Arpita Mandan, Daniel Truver"
-date: "2/5/2018"
+date: "3/5/2018"
 output: pdf_document
 ---
 
@@ -12,21 +12,21 @@ load("surveyData.Rdata")
 
 ##### (1) Sampling Design
 
+
+<!--
 -Stratify by department `r unique(surveyData$department)`
 
 -SRS within department
 
 -within stratum sample size chosen by optimum allocation formula (except strata with less than 10 courses, then we have full enumeration)
 
--total nuber of cases: 54. used optimal allocation formula with n = 50, then added one to all cases that rounded to 0, for a total of 54
-
-- why 54? seems reasonable considering there are 358 total courses in our frame
+--->
 
 ##### (2) Data Collection
 
 From the Duke University natural sciences website, https://trinity.duke.edu/natural-sciences, we obtained which courses are considered natural sciences. We obtained the required course numbers via web scraping of the Duke University bookstore. See web scraping Appendix. We then entered values for the sampled courses by hand from the bookstore website. As requested, we did not use courses numbered 700 and above. 
 
-The basic test for whether or not a course made the frame was whether its course name included "biology," "chemistry," "computer science," "evolutionary antrhopoly," "mathematics," "physics," "psychology," "neuroscience," or "statistical science." For example, we did not include "info science", but did include "biology" and "neurobiology," even though it is not listed explicitly by those names on the natural science website. Some course names, such as "biostatistics," have no courses numbered below 700; we excluded them.
+The basic test for whether or not a course made the frame was whether its course name included "biology," "chemistry," "computer science," "evolutionary antrhopoly," "mathematics," "physics," "psychology," "neuroscience," or "statistical science." For example, we did not include "info science", but did include "biology" and "neurobiology." Some course names, such as "biostatistics," have no courses numbered below 700; we excluded them.
 
 There are several types course we did not deem to be natural sciences. We did not include any type of engineering. They are not listed on the natural sciences webpage, and they just hit things with wrenches mostly. The Nicholas School of the Environment also does not appear; their federal grants are probably getting cut anyway. Sociology is absent, and we hold the reasons for this to be self-evident. Despite the opinions of a vocal minority, "old testament studies" also do not appear in our sample. 
 
@@ -365,4 +365,88 @@ save(classes.df, file = "classes.Rdata")
 #   html_node("#block-views-courses-block > div > div > div > table") %>%
 #   html_table() %>%
 #   filter(str_detect(.[,"Course Notes"], "offered Spring 2018"))
+```
+
+##### Appendix (data entry)
+
+```{r, eval=FALSE}
+library(dplyr)
+load("classes.Rdata")
+load("sample.Rdata")
+sample.df$numtexts = rep(NA, nrow(sample.df))
+sample.df$newprice = rep(NA, nrow(sample.df))
+sample.df$usedprice = rep(NA, nrow(sample.df))
+n = nrow(sample.df)
+##############################################
+# This function does not always return a valid url
+# Some classes may be listed as section 001 reather than 01
+##############################################
+make_store_url = function(department, number){
+  url_part1 = "http://dukebooks.collegestoreonline.com/ePOS?wpd=1&width=100%25&this_category=1&term=SP18&store=320&step=5&qty=1000&listtype=begin&go=Go&form=shared3%2Ftextbooks%2Fno_jscript%2Fmain.html&design=duke_textbooks&department="
+  url_part2 = department
+  url_part3 = "&course="
+  url_part4 = as.character(number)
+  url_part5 = "&colspan=3&cellspacing=1&cellpadding=0&campus=MAIN&border=0&bgcolor=%23cccccc&action=list_courses&section=01&Go=Go"
+  store_url = paste(url_part1, url_part2, url_part3, url_part4, url_part5, sep = "")
+  return(store_url)
+}
+
+x = rep(NA, n)
+for (i in seq_along(x)){
+  x[i] = make_store_url(sample.df[i,"department"], sample.df[i, "course"])
+}
+
+sample.df$numtexts[1:(n/2)] = c(0,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,2,
+                                2,1,1,0,1,1,0)
+
+sample.df$newprice[1:(n/2)] = c(0,181.50,186.75,0,0,0,0,0,0,181.50,0,0,0,0,0,0,0,0,0,118.74,
+                                204,181.50,118,0,142,69.50,0)
+
+sample.df$usedprice[1:(n/2)] = c(0,136.25,140.25,0,0,0,0,0,0,136.25,0,0,0,0,0,0,0,0,0,89.25,
+                                 153.25,136.25,88.50,0,106.50,52.25,0)
+
+sample.df$numtexts[(n/2 + 1):n] = c(0,1,0,0,0,1,0,0,0,0,1,0,0,0,0,0,1,0,1,
+                                    0,1,0,0,0,1,0,0)
+sample.df$newprice[(n/2 + 1):n] = c(0,253.50,0,0,0,117.50,0,0,0,0,52.50,0,0,0,0,0,48.00,0,251.75,
+                                    0,92.75,0,0,0,200.00,0,0)
+sample.df$usedprice[(n/2 +1):n] = c(0,190.25,0,0,0,88.25,0,0,0,0,39.50,0,0,0,0,0,36.00,0,189.00,
+                                    0,69.75,0,0,0,150.00,0,0)
+
+surveyData = sample.df
+
+newBIOCHEMrows = matrix(NA, ncol = ncol(surveyData), nrow = 7)
+colnames(newBIOCHEMrows) = names(surveyData)
+
+surveyData = rbind(newBIOCHEMrows, surveyData)
+surveyData[1:7,1] = "BIOCHEM"
+surveyData[1:7,"course"] = classes.df["BIOCHEM"] %>% .[.!= "" & .!= "536"]
+
+newMGMrows = matrix(NA, ncol = ncol(surveyData), nrow = 2)
+colnames(newMGMrows) = names(surveyData)
+
+surveyData = rbind(surveyData[1:37,], newMGMrows, surveyData[38:nrow(surveyData),])
+surveyData[38:39,1] = "MGM"
+surveyData[38:39,"course"] = c("552", "582")
+
+####################################
+# add new MGM and BIOCHEM data below here
+####################################
+
+surveyData[1:5, "numtexts"] = c(0,0,0,0,0)
+surveyData[1:5, "newprice"] = c(0,0,0,0,0)
+surveyData[1:5, "usedprice"] = c(0,0,0,0,0)
+
+surveyData[6:7, "numtexts"] = c(0,0)
+surveyData[6:7, "newprice"] = c(0,0)
+surveyData[6:7,"usedprice"] = c(0,0)
+
+surveyData[38:39, "numtexts"] = c(0,0)
+surveyData[38:39, "newprice"] = c(0,0)
+surveyData[38:39,"usedprice"] = c(0,0)
+
+surveyData[,"rowindex"] = c(1:nrow(surveyData)) #right rows
+
+save(surveyData, file = "surveyData.Rdata")
+
+write.csv(surveyData, file = "full_data.csv", row.names = FALSE)
 ```
