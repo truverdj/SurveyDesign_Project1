@@ -14,7 +14,7 @@ load("surveyData.Rdata")
 
 We first used stratified sampling, where the strata are the departments that we considered to be natural science departments. These included: Biochem, Biology, CMB, Chem, CompSci, Evanth, Math, MGM, Neurobio, Neurosci, Physics, Psy, and Stat. We used stratified sampling because we wanted to sample courses from every department, so that our estimator has a smaller variance than if we did a simple random sample, and is therefore more precise.
 
-Then using simple random sampling, we sampled courses from each stratum. We used the optimum allocation formula from class to determine the sample size within each stratum for all but four departments. For Biochem, CMB, MGM, and Neurobio that have fewer than ten courses, we enumerated all of them.
+Then using simple random sampling, we sampled courses from each stratum. We used the optimum allocation formula from class, considering a total sample size of 50, to determine the sample size within each stratum for all but four departments. For Biochem, CMB, MGM, and Neurobio that have fewer than ten courses, we enumerated all of them.
 
 Our sampling frame has 358 courses, with 63 courses in the final sample.
 
